@@ -34,10 +34,8 @@ CREATE TABLE gastos(
 	usuario_id INT NOT NULL, -- Usuario que realizó el pago del gasto
 	fecha DATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 	monto DECIMAL(10,2) NOT NULL,
-	cuotas INT NOT NULL,
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	CONSTRAINT gastos_monto_check CHECK(monto > 0),
-	CONSTRAINT gastos_cuotas_check CHECK(cuotas >= 1)
 );
 
 -- Trigger para crear tablas de cuotas al cargar un gasto (también para la eliminación)
@@ -78,7 +76,6 @@ CREATE TABLE categorias_usuarios(
 	FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
--- Falta validación para que el usuario esté pagando un gasto que le corresponde
 -- Tabla para registrar pagos de usuarios
 CREATE TABLE pagos_usuarios(
 	id INT IDENTITY PRIMARY KEY,
