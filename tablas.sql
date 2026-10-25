@@ -31,6 +31,7 @@ CREATE TABLE categorias(
 -- Tabla que registra todos los gastos del sistema
 CREATE TABLE gastos(
 	id INT IDENTITY PRIMARY KEY,
+	nombre VARCHAR(100) NOT NULL,
 	usuario_id INT NOT NULL, -- Usuario que realizó el pago del gasto
 	fecha DATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 	monto DECIMAL(10,2) NOT NULL,
