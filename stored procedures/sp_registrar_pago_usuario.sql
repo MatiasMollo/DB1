@@ -4,7 +4,7 @@ Registra el pago de un usuario (pagos usuarios)
 CREATE OR ALTER PROCEDURE sp_registrar_pago_usuario
 @usuario_id INT,
 @cuota_id INT,
-@importe DECIMAL,
+@importe DECIMAL(10,2),
 @fecha DATETIME
 AS
 BEGIN 
@@ -37,8 +37,33 @@ BEGIN
 			THROW 50012, 'El usuario no tiene relación alguna con la cuota', 1;
 
 		-- Verificación de importe (solo mayor al monto de la cuota, por restricción de DB ya se verifica > 0)
-		IF (@importe > (SELECT monto FROM cuotas WHERE id = @cuota_id))
-			THROW 50032, 'El importe a pagar no puede ser mayor al monto de la cuota', 1;
+
+		DECLARE @integrantes INT = 1; -- Por defecto se toma como gasto individual
+
+		-- Se verifica que el gasto no sea grupal
+		IF EXISTS (
+			SELECT 1 FROM grupos_usuarios as gu
+			JOIN gastos_grupos_usuarios as ggu ON gu.id = ggu.grupo_usuario_id
+			JOIN gastos as g on g.id = ggu.gasto_id
+			JOIN cuotas as c ON c.gasto_id = g.id
+			WHERE c.id = @cuota_id
+			
+		)
+			SET @integrantes = (
+				SELECT COUNT(id) FROM grupos_usuarios as gu
+				WHERE gu.id IN (
+					SELECT grupo_usuario_id FROM gastos_grupos_usuarios as ggu
+					JOIN gastos as g on g.id = ggu.gasto_id
+					JOIN cuotas as c on c.id = g.id
+					WHERE c.id = @cuota_id
+				)
+			)
+
+		-- División de la cuota entre los integrantes
+		DECLARE @maximo_posible DECIMAL(10,2) = (SELECT monto FROM cuotas WHERE id = @cuota_id) / @integrantes
+
+		IF (@importe > @maximo_posible)
+			THROW 50032, 'El importe que se está intentado abonar es mayor al gasto o a la participación por usuario', 1;
 		
 		INSERT INTO pagos_usuarios (usuario_id, cuota_id, importe, fecha) VALUES (
 			@usuario_id,

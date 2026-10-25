@@ -22,7 +22,7 @@ BEGIN
 		-- Al haberse creado la primera cuota por trigger, si la cantidad de cuotas es > 1, se debe calcular el importe de la primera y ditribuir entre la cantidad total de cuotas
 		IF @cuotas > 1
 		BEGIN
-			DECLARE @importe_por_cuota DECIMAL = @importe / @cuotas;
+			DECLARE @importe_por_cuota DECIMAL(10,2) = @importe / @cuotas;
 			DECLARE @numero_cuota INT = 2; -- Contador para cuotas
 
 			-- Actualización de la primera cuota creada por trigger
