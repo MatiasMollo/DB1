@@ -15,7 +15,7 @@ SELECT g.id AS gasto_id,
        u.nombre,
        u.apellido
 FROM gastos AS g
-JOIN usuarios AS u ON u.id = g.usuario_id                        -- Dueño del gasto
-LEFT JOIN gastos_grupos_usuarios AS ggu ON ggu.gasto_id = g.id   -- Trae participantes si existen
-WHERE ggu.id IS NULL;                                            -- Sin participantes = gasto individual
+JOIN usuarios AS u ON u.id = g.usuario_id -- Dueño del gasto
+LEFT JOIN gastos_grupos_usuarios AS ggu ON ggu.gasto_id = g.id -- Trae participantes si existen
+WHERE ggu.id IS NULL;-- Sin participantes = gasto individual
 GO

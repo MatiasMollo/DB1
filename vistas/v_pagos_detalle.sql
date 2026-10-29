@@ -16,6 +16,6 @@ SELECT pu.id AS pago_id,
        c.numero AS numero_cuota
 FROM pagos_usuarios AS pu
 JOIN usuarios AS u ON u.id = pu.usuario_id -- Quién pagó
-JOIN cuotas AS c ON c.id = pu.cuota_id     -- Qué cuota pagó
-JOIN gastos AS g ON g.id = c.gasto_id;     -- A qué gasto pertenece esa cuota
+JOIN cuotas AS c ON c.id = pu.cuota_id -- Qué cuota pagó
+JOIN gastos AS g ON g.id = c.gasto_id; -- A qué gasto pertenece esa cuota
 GO

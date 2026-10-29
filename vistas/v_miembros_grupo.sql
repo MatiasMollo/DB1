@@ -13,5 +13,5 @@ SELECT g.id AS grupo_id,
        gu.fecha_ingreso
 FROM grupos AS g
 JOIN grupos_usuarios AS gu ON gu.grupo_id = g.id -- Relación grupo -> miembros
-JOIN usuarios AS u ON u.id = gu.usuario_id;      -- Datos de cada miembro
+JOIN usuarios AS u ON u.id = gu.usuario_id; -- Datos de cada miembro
 GO
