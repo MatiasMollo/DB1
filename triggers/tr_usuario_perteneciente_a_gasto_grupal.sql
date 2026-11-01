@@ -17,8 +17,8 @@ BEGIN
 		SELECT 1 FROM inserted as i
 		WHERE NOT EXISTS (
 			SELECT 1 FROM grupos_usuarios as gu -- Se obtienen los registros de grupos - usuarios
-			WHERE gu.usuario_id = (SELECT usuario_id FROM gastos as g on g.id = i.gasto_id) -- Se obtiene el usuario en base al gasto de la inserción
-			AND gu.grupo_id = (SELECT grupo_id FROM grupos_usuarios as gu2 on gu2.id = i.grupo_usuario_id) -- Se obtienen los datos del grupo en la DB
+			WHERE gu.usuario_id = (SELECT usuario_id FROM gastos AS g WHERE g.id = i.gasto_id) -- Se obtiene el usuario en base al gasto de la inserción
+			AND gu.grupo_id = (SELECT grupo_id FROM grupos_usuarios AS gu2 WHERE gu2.id = i.grupo_usuario_id) -- Se obtienen los datos del grupo en la DB
 		)
 	)
 	BEGIN 

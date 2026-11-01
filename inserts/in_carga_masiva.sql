@@ -124,8 +124,17 @@ DECLARE @u6 INT = (SELECT id FROM usuarios WHERE dni = 35666777);
 DECLARE @u7 INT = (SELECT id FROM usuarios WHERE dni = 36777888);
 DECLARE @u8 INT = (SELECT id FROM usuarios WHERE dni = 37888999);
 
+-- Categorias creadas anteriormente
+DECLARE @c1 INT = (SELECT id FROM categorias WHERE nombre = 'Alimentos');
+DECLARE @c2 INT = (SELECT id FROM categorias WHERE nombre = 'Transporte');
+DECLARE @c3 INT = (SELECT id FROM categorias WHERE nombre = 'Hogar');
+DECLARE @c4 INT = (SELECT id FROM categorias WHERE nombre = 'Varios');
+DECLARE @c5 INT = (SELECT id FROM categorias WHERE nombre = 'Varios');
+DECLARE @c6 INT = (SELECT id FROM categorias WHERE nombre = 'Servicios');
+DECLARE @c7 INT = (SELECT id FROM categorias WHERE nombre = 'Salud');
+
 -- G1: Alojamiento Bariloche, paga Lucía, 120.000 en 3 cuotas de 40.000
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u1, 'Alojamiento Bariloche', 120000.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u1, 'Alojamiento Bariloche', 120000.00,@c1);
 SET @g1 = SCOPE_IDENTITY();
 
 -- cuota 1 creada por trigger, por lo que se cambia el monto para distribuir en la cantidad total de cuotas
@@ -141,7 +150,7 @@ FROM grupos_usuarios gu
 JOIN grupos g ON g.id = gu.grupo_id AND g.nombre = 'Viaje a Bariloche';
 
 -- G2: Cena Bariloche, paga Martín, 48.000 en 1 cuota
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u2, 'Cena Bariloche', 48000.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u2, 'Cena Bariloche', 48000.00,@c2);
 SET @g2 = SCOPE_IDENTITY();
 
 INSERT INTO gastos_grupos_usuarios (gasto_id, grupo_usuario_id)
@@ -151,7 +160,7 @@ JOIN grupos g ON g.id = gu.grupo_id AND g.nombre = 'Viaje a Bariloche';
 
 
 -- G3: Heladera del depto, paga Valentina, 90.000 en 6 cuotas de 15.000
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u5, 'Heladera del depto', 90000.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u5, 'Heladera del depto', 90000.00, @c3);
 SET @g3 = SCOPE_IDENTITY();
 
 -- cuota 1 creada por trigger, por lo que se cambia el monto para distribuir en la cantidad total de cuotas
@@ -171,7 +180,7 @@ JOIN grupos g ON g.id = gu.grupo_id AND g.nombre = 'Departamento';
 
 
 -- G4: Internet del depto, paga Lucía, 18.000 en 1 cuota, solo entre Valentina, Joaquín y Camila ----------
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u1, 'Internet del depto', 18000.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u1, 'Internet del depto', 18000.00, @c2);
 SET @g4 = SCOPE_IDENTITY();
 
 INSERT INTO gastos_grupos_usuarios (gasto_id, grupo_usuario_id)
@@ -181,7 +190,7 @@ JOIN grupos g ON g.id = gu.grupo_id AND g.nombre = 'Departamento'
 WHERE gu.usuario_id IN (@u5, @u6, @u7);
 
 -- ---------- G5: Carrera de karting, paga Tomás, 24.000 en 1 cuota ----------
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u8, 'Carrera del viernes 16-10', 24000.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u8, 'Carrera del viernes 16-10', 24000.00, @c4);
 SET @g5 = SCOPE_IDENTITY();
 
 INSERT INTO gastos_grupos_usuarios (gasto_id, grupo_usuario_id)
@@ -192,7 +201,7 @@ JOIN grupos g ON g.id = gu.grupo_id AND g.nombre = 'Kartings';
 -- ---------- Gastos individuales (sin filas en gastos_grupos_usuarios) ----------
 
 -- I1: Lucía, 12.000 en 3 cuotas de 4.000
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u1, 'Consulta médica', 12000.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u1, 'Consulta médica', 12000.00, @c1);
 SET @i1 = SCOPE_IDENTITY();
 
 -- cuota 1 creada por trigger, por lo que se cambia el monto para distribuir en la cantidad total de cuotas
@@ -204,11 +213,11 @@ INSERT INTO cuotas (gasto_id, numero, vencimiento, monto) VALUES
 	(@i1, 3, DATEADD(MONTH, 2, @hoy), 4000.00);
 
 -- I2: Mateo, 8.500 en 1 cuota
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u4, 'Carga de transporte', 8500.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u4, 'Carga de transporte', 8500.00, @c2);
 SET @i2 = SCOPE_IDENTITY();
 
 -- I3: Valentina, 60.000 en 12 cuotas de 5.000
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u5, 'Notebook', 60000.00);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u5, 'Notebook', 60000.00, @c4);
 SET @i3 = SCOPE_IDENTITY();
 
 -- cuota 1 creada por trigger, por lo que se cambia el monto para distribuir en la cantidad total de cuotas
@@ -227,7 +236,7 @@ INSERT INTO cuotas (gasto_id, numero, vencimiento, monto) VALUES
 	(@i3, 12, DATEADD(MONTH, 11, @hoy), 5000.00);
 
 -- I4: Camila, 3.200,50 en 1 cuota
-INSERT INTO gastos (usuario_id, nombre, monto) VALUES (@u7, 'Café y medialunas', 3200.50);
+INSERT INTO gastos (usuario_id, nombre, monto, categoria_id) VALUES (@u7, 'Café y medialunas', 3200.50, @c1);
 SET @i4 = SCOPE_IDENTITY();
 
 -- ============================================================
