@@ -12,10 +12,12 @@ SELECT pu.id AS pago_id,
        u.apellido,
        g.id AS gasto_id,
        g.nombre AS gasto,
+       cat.nombre as categoria,
        c.id AS cuota_id,
        c.numero AS numero_cuota
 FROM pagos_usuarios AS pu
 JOIN usuarios AS u ON u.id = pu.usuario_id -- Quién pagó
 JOIN cuotas AS c ON c.id = pu.cuota_id -- Qué cuota pagó
-JOIN gastos AS g ON g.id = c.gasto_id; -- A qué gasto pertenece esa cuota
+JOIN gastos AS g ON g.id = c.gasto_id -- A qué gasto pertenece esa cuota
+JOIN categorias as cat on cat.id = g.categoria_id;
 GO

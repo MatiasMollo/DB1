@@ -8,6 +8,7 @@ SELECT g.id AS gasto_id,
        g.nombre AS gasto,
        g.fecha,
        g.monto,
+       cat.nombre as categoria,
        u.id AS pagador_id,
        u.nombre AS pagador_nombre,
        u.apellido AS pagador_apellido,
@@ -21,5 +22,6 @@ SELECT g.id AS gasto_id,
         FROM cuotas AS c
         WHERE c.gasto_id = g.id) AS cantidad_cuotas
 FROM gastos AS g
+JOIN categorias as cat on cat.id = g.categoria_id
 JOIN usuarios AS u ON u.id = g.usuario_id; -- Quién adelantó el gasto
 GO

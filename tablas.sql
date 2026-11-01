@@ -35,8 +35,10 @@ CREATE TABLE gastos(
 	usuario_id INT NOT NULL, -- Usuario que realizó el pago del gasto
 	fecha DATETIME NOT NULL DEFAULT(CURRENT_TIMESTAMP),
 	monto DECIMAL(10,2) NOT NULL,
+	categoria_id INT NOT NULL,
 	FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
 	CONSTRAINT gastos_monto_check CHECK(monto > 0),
+	FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
 
 -- Trigger para crear tablas de cuotas al cargar un gasto (también para la eliminación)
