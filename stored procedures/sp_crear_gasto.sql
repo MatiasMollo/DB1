@@ -5,11 +5,11 @@ Al finalizar, retorna el ID del gasto creado, el cual puede asociarse a un grupo
 
 CREATE OR ALTER PROCEDURE sp_crear_gasto
 @usuario_id INT,
+@nombre VARCHAR(100),
 @importe DECIMAL(10,2),
 @cuotas INT = 1, -- Por defecto una cuota para un gasto normal (sin cuotas / de contado)
 @fecha DATETIME = NULL,
-@categoria_id INT,
-@gasto_id INT OUTPUT -- Devuelve el ID 
+@categoria_id INT
 AS
 BEGIN
 	BEGIN TRY
@@ -27,7 +27,8 @@ BEGIN
 			)
 			THROW 50013, 'La categoría seleccionada no tiene relación con el usuario', 1;
 
-		INSERT INTO gastos (usuario_id, fecha, monto, categoria_id) VALUES (@usuario_id, @fecha, @importe, @categoria_id);
+		INSERT INTO gastos (usuario_id, nombre, fecha, monto, categoria_id) VALUES (@usuario_id, @nombre, @fecha, @importe, @categoria_id);
+		DECLARE @gasto_id INT;
 		SET @gasto_id = SCOPE_IDENTITY(); --Scope Identity devuelve la última generación de un campo IDENTITY, en este caso, gasto_id
 
 		-- Al haberse creado la primera cuota por trigger, si la cantidad de cuotas es > 1, se debe calcular el importe de la primera y ditribuir entre la cantidad total de cuotas
