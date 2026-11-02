@@ -1,6 +1,9 @@
 USE TPO;
 GO
 
+/*
+    Retorna las cuotas que estan próximas a vencer (desde ahora hasta dentro de los próximos 7 días)
+*/
 CREATE OR ALTER VIEW v_cuotas_proximas_vencer
 AS
 SELECT c.id AS cuota_id,

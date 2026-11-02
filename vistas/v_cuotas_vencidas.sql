@@ -1,7 +1,9 @@
 USE TPO;
 GO
 
---obtener cuotas vencidas
+/*
+    Obtiene las cuotas vencidas (esten pagas o no)
+*/
 
 CREATE OR ALTER VIEW v_cuotas_vencidas
 AS
