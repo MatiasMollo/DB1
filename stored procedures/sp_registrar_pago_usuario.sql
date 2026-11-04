@@ -54,7 +54,7 @@ BEGIN
 				WHERE gu.id IN (
 					SELECT grupo_usuario_id FROM gastos_grupos_usuarios as ggu
 					JOIN gastos as g on g.id = ggu.gasto_id
-					JOIN cuotas as c on c.id = g.id
+					JOIN cuotas as c on c.gasto_id = g.id
 					WHERE c.id = @cuota_id
 				)
 			)
