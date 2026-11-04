@@ -21,5 +21,6 @@ SELECT DISTINCT
     FROM gastos AS g
     LEFT JOIN gastos_grupos_usuarios AS ggu ON g.id = ggu.gasto_id
     WHERE ggu.id IS NULL -- Se verifica que el gasto no esté registrado como grupal
+    AND g.usuario_id = @usuario_id
 );
 go
